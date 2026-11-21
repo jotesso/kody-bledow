@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>KOD BŁĘDU F.28 VAILLANT – PRZYCZYNY, RESET, NAPRAWA | PROMPTOWY.COM STYLE</title>
+  <meta name="description" content="Kompletny przewodnik diagnostyczny błędu F.28 w kotłach Vaillant ecoTEC. Sprawdź solucję krok po kroku, procedurę resetu i schemat DTR.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    /* ==========================================================================
+       PROMPTOWY.COM DESIGN SYSTEM – 1:1 REPLICA
+       Charakterystyka:
+       - Ciemny obsidian/plum header & hero (#090412, #0d0818)
+       - Krój nagłówkowy: Bebas Neue (wielki, skondensowany, ultra-wyrazisty)
+       - Akcent neonowej fuksji/różu (#d946ef, #e879f9)
+       - Jaskrawy złoto-żółty przycisk akcji (#f5c05c) z czarnym tekstem
+       - Przejścia sekcji: ciemny kosmos -> ciepły kremowy papier (#faf8f5) z drop-capem
+       - Czerwone kwadraciki w nawigacji (■)
+       ========================================================================== */
+    :root {
+      /* Kolory ciemnego motywu (Hero, FAQ, Newsletter, Stopka) */
+      --bg-dark-deep: #090412;
+      --bg-dark-surface: #0f0a1d;
+      --bg-dark-card: #150f28;
+      --bg-dark-input: #1a1232;
+      --border-dark: #2d1f47;
+      --border-dark-subtle: #201636;
+
+      /* Kolory jasnego motywu (Sekcja artykułu, Źródła) */
+      --bg-cream: #faf8f5;
+      --bg-cream-surface: #ffffff;
+      --border-cream: #e5e0d8;
+      --text-cream-title: #111827;
+      --text-cream-body: #374151;
+      --text-cream-muted: #6b7280;
+
+      /* Akcenty barwne z Promptowy.com */
+      --accent-gold: #f5c05c;
+      --accent-gold-hover: #e5af3a;
+      --accent-pink: #d946ef;
+      --accent-pink-light: #e879f9;
+      --accent-red-dot: #ef4444;
+
+      /* Teksty w sekcjach ciemnych */
+      --text-white: #ffffff;
+      --text-gray-light: #d1d5db;
+      --text-gray-muted: #9ca3af;
+      --text-gray-dark: #6b7280;
+
+      /* Fonty */
+      --font-display: 'Bebas Neue', Impact, sans-serif;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-text-size-adjust: 100%;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-dark-deep);
+      color: var(--text-gray-light);
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* ==========================================================================
+       1. HEADER GŁÓWNY (1:1 PROMPTOWY)
+       ========================================================================== */
+    .prompt-header {
+      background: var(--bg-dark-deep);
+      border-bottom: 1px solid var(--border-dark);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top-row {
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-icon {
+      font-size: 1.2rem;
+    }
+
+    /* Główne linki nawigacji z czerwonymi kwadracikami */
+    .primary-nav {
+      display: none;
+    }
+
+    @media (min-width: 980px) {
+      .primary-nav {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        list-style: none;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .red-dot {
+        color: var(--accent-red-dot);
+        font-size: 0.65rem;
+        line-height: 1;
+      }
+      .nav-link {
+        text-decoration: none;
+        color: #ffffff;
+        font-size: 0.88rem;
+        font-weight: 600;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        transition: color 0.15s;
+      }
+      .nav-link:hover {
+        color: var(--accent-pink-light);
+      }
+      .dropdown-arrow {
+        font-size: 0.65rem;
+        color: var(--text-gray-muted);
+      }
+    }
+
+    /* Prawa strona headera: Wyszukiwarka + Złoty przycisk */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .search-box-pill {
+      display: none;
+      position: relative;
+      align-items: center;
+    }
+
+    @media (min-width: 640px) {
+      .search-box-pill {
+        display: flex;
+      }
+    }
+
+    .search-box-pill svg {
+      position: absolute;
+      left: 12px;
+      color: var(--text-gray-muted);
+      pointer-events: none;
+    }
+
+    .search-input-field {
+      width: 180px;
+      height: 36px;
+      padding: 0 46px 0 34px;
+      background: var(--bg-dark-surface);
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      color: #ffffff;
+      font-size: 0.82rem;
+      font-family: var(--font-sans);
+      transition: all 0.2s;
+    }
+
+    .search-input-field:focus {
+      outline: none;
+      border-color: var(--accent-pink);
+      width: 220px;
+    }
+
+    .ctrl-k-badge {
+      position: absolute;
+      right: 8px;
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-gray-muted);
+      border: 1px solid var(--border-dark);
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: var(--bg-dark-card);
+      pointer-events: none;
+    }
+
+    /* ZŁOTY PRZYCISK "SKLEP" Z PROMPTOWY.COM */
+    .btn-gold-action {
+      background: var(--accent-gold);
+      color: #090412;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.05em;
+      padding: 6px 18px;
+      border-radius: 3px;
+      text-decoration: none;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.1s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-gold-action:hover {
+      background: var(--accent-gold-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hamburger button na mobile */
+    .mobile-menu-trigger {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: 1px solid var(--border-dark);
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    @media (min-width: 980px) {
+      .mobile-menu-trigger {
+        display: none;
+      }
+    }
+
+    .mobile-menu-trigger span {
+      width: 20px;
+      height: 2px;
+      background: #ffffff;
+    }
+
+    /* SUB-NAVBAR Z CZERWONYMI KWADRATAMI (1:1 PROMPTOWY) */
+    .sub-navbar {
+      background: #080310;
+      border-bottom: 1px solid var(--border-dark);
+      padding: 8px 0;
+      font-size: 0.78rem;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+    .sub-nav-list {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      list-style: none;
+    }
+
+    .sub-nav-brand {
+      color: #ffffff;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .sub-nav-link {
+      color: var(--text-gray-light);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 600;
+      transition: color 0.15s;
+    }
+
+    .sub-nav-link:hover {
+      color: var(--accent-pink-light);
+    }
+
+    /* ==========================================================================
+       2. HERO SECTION (1:1 PROMPTOWY GTA 6 STYLE)
+       ========================================================================== */
+    .hero-prompt-section {
+      background: radial-gradient(circle at 80% 20%, rgba(217, 70, 239, 0.08), transparent 45%),
+                  linear-gradient(180deg, #090412 0%, #0d0818 100%);
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--border-dark);
+      position: relative;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.08em;
+      color: var(--accent-pink);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hero-main-title {
+      font-family: var(--font-display);
+      font-size: clamp(3rem, 8vw, 6.2rem);
+      font-weight: 400;
+      line-height: 0.95;
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hero-pink-subtitle {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3.5vw, 2.2rem);
+      letter-spacing: 0.04em;
+      color: var(--accent-pink);
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    .hero-lead-text {
+      max-width: 760px;
+      font-size: 0.98rem;
+      color: var(--text-gray-light);
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    /* PASEK STATYSTYK: 4 DUŻE LICZBY Z PODPISAMI */
+    .hero-stats-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      padding-bottom: 24px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    @media (min-width: 640px) {
+      .hero-stats-strip {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .stat-number-box {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-big-num {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 5vw, 3.8rem);
+      line-height: 1;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .stat-num-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-gray-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    /* Pasek autora i daty (wersaliki z różem) */
+    .author-meta-bar {
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--accent-pink-light);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* ==========================================================================
+       3. DWUKOLUMNOWE PANELE AKCJI I DIAGNOZY (1:1 PROMPTOWY)
+       ========================================================================== */
+    .panels-section {
+      background: var(--bg-dark-deep);
+      padding: 48px 0;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .panels-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+    }
+
+    @media (min-width: 880px) {
+      .panels-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .action-panel-col {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .col-header-bebas {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      letter-spacing: 0.03em;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .col-desc-sub {
+      font-size: 0.88rem;
+      color: var(--text-gray-muted);
+      line-height: 1.5;
+      margin-bottom: 24px;
+      min-height: 42px;
+    }
+
+    .panel-wait-title {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      letter-spacing: 0.04em;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .panel-wait-desc {
+      font-size: 0.88rem;
+      color: var(--text-gray-light);
+      margin-bottom: 20px;
+    }
+
+    /* Ramka z formularzem akcji (fioletowy obrys) */
+    .panel-action-card {
+      background: var(--bg-dark-card);
+      border: 1px solid var(--border-dark);
+      padding: 24px;
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-box-title {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: #ffffff;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .card-box-note {
+      font-size: 0.84rem;
+      color: var(--text-gray-muted);
+      line-height: 1.45;
+      margin-bottom: 18px;
+    }
+
+    .card-box-note a {
+      color: var(--accent-pink-light);
+      text-decoration: underline;
+    }
+
+    .input-label-tiny {
+      font-size: 0.75rem;
+      color: var(--text-gray-muted);
+      margin-bottom: 6px;
+      display: block;
+    }
+
+    .panel-input-dark {
+      width: 100%;
+      height: 42px;
+      background: var(--bg-dark-input);
+      border: 1px solid var(--border-dark);
+      border-radius: 3px;
+      padding: 0 14px;
+      color: #ffffff;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      margin-bottom: 16px;
+    }
+
+    .panel-input-dark:focus {
+      outline: none;
+      border-color: var(--accent-pink);
+    }
+
+    .panel-btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: auto;
+    }
+
+    .btn-dark-outline {
+      background: #000000;
+      color: #ffffff;
+      border: 1px solid #ffffff;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.05em;
+      padding: 8px 16px;
+      border-radius: 2px;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: background 0.15s;
+    }
+
+    .btn-dark-outline:hover {
+      background: #ffffff;
+      color: #000000;
+    }
+
+    .consent-check-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.78rem;
+      color: var(--text-gray-muted);
+      line-height: 1.4;
+      margin-bottom: 16px;
+    }
+
+    .consent-check-row input {
+      margin-top: 2px;
+      accent-color: var(--accent-pink);
+    }
+
+    .rodo-footer-bar {
+      margin-top: 36px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border-dark-subtle);
+      font-size: 0.75rem;
+      color: var(--text-gray-dark);
+      line-height: 1.6;
+    }
+
+    .rodo-footer-bar strong {
+      color: var(--text-gray-muted);
+    }
+
+    /* ==========================================================================
+       4. PRZEJŚCIE DO SEKCJI JASNEJ: WARM CREAM EDITORIAL Z DROP-CAPEM (1:1)
+       ========================================================================== */
+    .editorial-cream-section {
+      background-color: var(--bg-cream);
+      color: var(--text-cream-body);
+      padding: 72px 0 80px;
+      border-bottom: 1px solid var(--border-cream);
+    }
+
+    .editorial-content-wrap {
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    /* RÓŻOWY DROP-CAP (INICJAŁ) Z PROMPTOWY.COM */
+    .drop-cap-paragraph {
+      font-size: 1.25rem;
+      line-height: 1.6;
+      color: var(--text-cream-title);
+      margin-bottom: 24px;
+    }
+
+    .drop-cap-letter {
+      float: left;
+      font-family: var(--font-display);
+      font-size: 5.5rem;
+      line-height: 0.78;
+      padding-top: 8px;
+      padding-right: 14px;
+      padding-bottom: 4px;
+      color: var(--accent-pink);
+      font-weight: 700;
+    }
+
+    .editorial-body-p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-cream-body);
+      margin-bottom: 24px;
+    }
+
+    .editorial-body-p a {
+      color: var(--accent-pink);
+      text-decoration: underline;
+      font-weight: 600;
+    }
+
+    /* Tabela / lista kontrolna w stylu Promptowy */
+    .editorial-spec-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 32px 0;
+      background: var(--bg-cream-surface);
+      border: 1px solid var(--border-cream);
+      font-size: 0.95rem;
+    }
+
+    .editorial-spec-table th {
+      background: #f3efe8;
+      padding: 12px 16px;
+      text-align: left;
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      letter-spacing: 0.04em;
+      color: var(--text-cream-title);
+      border-bottom: 2px solid var(--border-cream);
+    }
+
+    .editorial-spec-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border-cream);
+      color: var(--text-cream-body);
+    }
+
+    .editorial-spec-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* ==========================================================================
+       5. SEKCJA FAQ (NAJCZĘSTSZE PYTANIA - ZE ZRZUTU 2)
+       ========================================================================== */
+    .faq-dark-section {
+      background: var(--bg-dark-deep);
+      padding: 64px 0 72px;
+      border-bottom: 1px solid var(--border-dark);
+      position: relative;
+    }
+
+    /* Gradientowy pasek nad FAQ */
+    .faq-gradient-top-line {
+      width: 120px;
+      height: 3px;
+      background: linear-gradient(90deg, #d946ef, #38bdf8);
+      margin-bottom: 20px;
+    }
+
+    .faq-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .faq-giant-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      letter-spacing: 0.02em;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .faq-eyebrow-right {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-gray-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .faq-accordion-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .faq-accordion-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .faq-question-title {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      letter-spacing: 0.03em;
+      color: #ffffff;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .faq-answer-body {
+      font-size: 0.92rem;
+      color: var(--text-gray-light);
+      line-height: 1.6;
+      max-width: 860px;
+    }
+
+    /* ==========================================================================
+       6. ŹRÓDŁA I MATRYCA LINKÓW (KREMOWE TŁO - ZE ZRZUTU 2)
+       ========================================================================== */
+    .sources-cream-section {
+      background: var(--bg-cream);
+      padding: 56px 0;
+      border-bottom: 1px solid var(--border-cream);
+    }
+
+    .sources-title-bebas {
+      font-family: var(--font-display);
+      font-size: 2.2rem;
+      letter-spacing: 0.03em;
+      color: var(--text-cream-title);
+      margin-bottom: 16px;
+    }
+
+    .sources-list {
+      list-style: none;
+      margin-bottom: 48px;
+    }
+
+    .sources-item {
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border-cream);
+      font-size: 0.88rem;
+      color: var(--text-cream-body);
+    }
+
+    .sources-item a {
+      color: var(--text-cream-body);
+      text-decoration: underline;
+    }
+
+    .sources-item.dtr-locked {
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      color: var(--text-cream-muted);
+    }
+
+    .sources-disclaimer {
+      font-size: 0.78rem;
+      color: var(--text-cream-muted);
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* 4-kolumnowy pasek podkategorii */
+    .matrix-links-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px 24px;
+      border-top: 2px solid var(--text-cream-title);
+      padding-top: 24px;
+      margin-top: 36px;
+    }
+
+    @media (min-width: 768px) {
+      .matrix-links-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .matrix-link-box {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      letter-spacing: 0.04em;
+      color: var(--text-cream-title);
+      text-decoration: none;
+      display: block;
+      border-bottom: 1px solid var(--border-cream);
+      padding-bottom: 8px;
+      transition: color 0.15s;
+    }
+
+    .matrix-link-box:hover {
+      color: var(--accent-pink);
+    }
+
+    /* ==========================================================================
+       7. NEWSLETTER / SCHEMAT DTR DO POBRANIA (ZE ZRZUTU 3)
+       ========================================================================== */
+    .download-newsletter-section {
+      background: var(--bg-dark-deep);
+      padding: 64px 0;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .download-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    @media (min-width: 920px) {
+      .download-grid {
+        grid-template-columns: 1.2fr 0.8fr;
+      }
+    }
+
+    .dl-eyebrow {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      color: var(--accent-pink);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .dl-main-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.6rem, 5.5vw, 4.4rem);
+      color: #ffffff;
+      line-height: 0.98;
+      letter-spacing: 0.02em;
+      margin-bottom: 14px;
+    }
+
+    .dl-desc {
+      font-size: 0.95rem;
+      color: var(--text-gray-light);
+      margin-bottom: 24px;
+    }
+
+    .features-0123-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .feature-0-row {
+      display: flex;
+      gap: 16px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-dark-subtle);
+    }
+
+    .feat-num {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-gray-muted);
+    }
+
+    .feat-heading {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2px;
+    }
+
+    .feat-sub {
+      font-size: 0.84rem;
+      color: var(--text-gray-muted);
+    }
+
+    /* Formularz newslettera z żółtym przyciskiem */
+    .email-submit-wrap {
+      display: flex;
+      gap: 10px;
+      flex-direction: column;
+      margin-bottom: 12px;
+    }
+
+    @media (min-width: 540px) {
+      .email-submit-wrap {
+        flex-direction: row;
+      }
+    }
+
+    .email-dark-input {
+      flex: 1;
+      height: 48px;
+      background: var(--bg-dark-surface);
+      border: 1px solid var(--border-dark);
+      border-radius: 3px;
+      padding: 0 16px;
+      color: #ffffff;
+      font-size: 0.92rem;
+    }
+
+    .email-dark-input:focus {
+      outline: none;
+      border-color: var(--accent-pink);
+    }
+
+    .btn-gold-download {
+      background: var(--accent-gold);
+      color: #090412;
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      height: 48px;
+      padding: 0 24px;
+      border-radius: 3px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s;
+    }
+
+    .btn-gold-download:hover {
+      background: var(--accent-gold-hover);
+    }
+
+    /* Prawa kolumna: Ramka z mapą / schematem kotła */
+    .schematic-preview-card {
+      background: var(--bg-dark-card);
+      border: 1px solid var(--border-dark);
+      border-radius: 4px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.4);
+    }
+
+    .schematic-svg-art {
+      width: 100%;
+      max-width: 320px;
+      height: auto;
+      border: 1px solid var(--border-dark);
+      background: #080312;
+      border-radius: 3px;
+      margin-bottom: 12px;
+    }
+
+    .schematic-caption-row {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-gray-muted);
+      letter-spacing: 0.04em;
+    }
+
+    /* ==========================================================================
+       8. AUTOR BIO BAR & 6-KOLUMNOWA STOPKA (ZE ZRZUTU 3)
+       ========================================================================== */
+    .author-banner-section {
+      background: var(--bg-dark-deep);
+      padding: 32px 0;
+      border-bottom: 1px solid var(--border-dark);
+    }
+
+    .author-banner-inner {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .author-avatar-img {
+      width: 56px;
+      height: 56px;
+      border-radius: 6px;
+      background: #1f1538;
+      border: 1px solid var(--accent-pink);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 1.5rem;
+      color: #ffffff;
+      flex-shrink: 0;
+    }
+
+    .author-text-info {
+      flex: 1;
+      font-size: 0.92rem;
+      color: var(--text-gray-light);
+    }
+
+    .author-text-info strong {
+      color: #ffffff;
+    }
+
+    .author-text-info a {
+      color: var(--accent-pink-light);
+      text-decoration: none;
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    /* 6-KOLUMNOWY FOOTER */
+    .six-col-footer {
+      background: var(--bg-dark-deep);
+      padding: 48px 0 32px;
+    }
+
+    .six-col-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px 20px;
+      margin-bottom: 40px;
+    }
+
+    @media (min-width: 640px) {
+      .six-col-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (min-width: 980px) {
+      .six-col-grid {
+        grid-template-columns: repeat(6, 1fr);
+      }
+    }
+
+    .footer-col-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      letter-spacing: 0.05em;
+      color: #ffffff;
+      margin-bottom: 14px;
+    }
+
+    .footer-links-col {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-links-col a {
+      font-size: 0.84rem;
+      color: var(--text-gray-muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .footer-links-col a:hover {
+      color: #ffffff;
+    }
+
+    .all-topics-bar {
+      border-top: 1px solid var(--border-dark-subtle);
+      padding-top: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+      color: var(--text-gray-muted);
+    }
+
+    .all-topics-bar a {
+      color: #ffffff;
+      font-weight: 700;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 1. GŁÓWNY HEADER PROMPTOWY.COM -->
+  <header class="prompt-header">
+    <div class="container">
+      <div class="header-top-row">
+        
+        <!-- Logo -->
+        <a href="#" class="brand-wrap">
+          <span class="brand-title">KODYBŁĘDÓW <span class="brand-icon">🔧</span></span>
+        </a>
+
+        <!-- Menu główne z czerwonymi kwadracikami -->
+        <ul class="primary-nav">
+          <li class="nav-item">
+            <a href="#" class="nav-link">Najnowsze</a>
+          </li>
+          <li class="nav-item">
+            <span class="red-dot">■</span>
+            <a href="#" class="nav-link">Kotły gazowe <span class="dropdown-arrow">▾</span></a>
+          </li>
+          <li class="nav-item">
+            <span class="red-dot">■</span>
+            <a href="#" class="nav-link">Pompy ciepła <span class="dropdown-arrow">▾</span></a>
+          </li>
+          <li class="nav-item">
+            <span class="red-dot">■</span>
+            <a href="#" class="nav-link">Klimatyzacja <span class="dropdown-arrow">▾</span></a>
+          </li>
+          <li class="nav-item">
+            <span class="red-dot">■</span>
+            <a href="#" class="nav-link">Duże AGD <span class="dropdown-arrow">▾</span></a>
+          </li>
+          <li class="nav-item">
+            <a href="#" class="nav-link">Baza DTR <span class="dropdown-arrow">▾</span></a>
+          </li>
+        </ul>
+
+        <!-- Prawa strona: Szukaj (Ctrl K) + Złoty przycisk -->
+        <div class="header-actions">
+          <div class="search-box-pill">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" class="search-input-field" placeholder="Szukaj kodu..." id="search-input">
+            <kbd class="ctrl-k-badge">Ctrl K</kbd>
+          </div>
+
+          <a href="#newsletter" class="btn-gold-action">BAZA DTR</a>
+
+          <button class="mobile-menu-trigger" aria-label="Menu" onclick="alert('Menu mobilne');">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Pasek podrzędny (Sub-nav z czerwonymi kwadratami) -->
+    <div class="sub-navbar">
+      <div class="container">
+        <ul class="sub-nav-list">
+          <li class="sub-nav-brand">VAILLANT</li>
+          <li><a href="#" class="sub-nav-link"><span class="red-dot">■</span> Mapa błędów</a></li>
+          <li><a href="#" class="sub-nav-link"><span class="red-dot">■</span> Solucja F.28</a></li>
+          <li><a href="#" class="sub-nav-link"><span class="red-dot">■</span> Drzewo usterek</a></li>
+          <li><a href="#" class="sub-nav-link"><span class="red-dot">■</span> Reset palnika</a></li>
+          <li><a href="#" class="sub-nav-link"><span class="red-dot">■</span> Kody pokrewne</a></li>
+          <li><a href="#" class="sub-nav-link"><span class="red-dot">■</span> Checklista DTR 100%</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- 2. HERO: GŁÓWNA SEKCJA W STYLU RANKINGU GTA 6 Z PROMPTOWY.COM -->
+  <section class="hero-prompt-section">
+    <div class="container">
+      
+      <div class="hero-eyebrow">
+        VAILLANT — KOD USTERKI KOTŁA CO
+      </div>
+
+      <h1 class="hero-main-title">
+        KOD BŁĘDU F.28 VAILLANT
+      </h1>
+
+      <div class="hero-pink-subtitle">
+        NIEUDANY ZAPŁON PALNIKA • BLOKADA USTERKOWA
+      </div>
+
+      <p class="hero-lead-text">
+        Dwie tablice diagnostyczne: czynności dozwolone dla użytkownika bez otwierania obudowy oraz zaawansowana procedura pomiarowa dla instalatora z uprawnieniami SEP G3. Sprawdź przyczynę w 3 sekundy.
+      </p>
+
+      <!-- 4 DUŻE LICZBY STATYSTYK -->
+      <div class="hero-stats-strip">
+        <div class="stat-number-box">
+          <span class="stat-big-num">3</span>
+          <span class="stat-num-label">AUTOMATYCZNE PRÓBY ZAPŁONU</span>
+        </div>
+        <div class="stat-number-box">
+          <span class="stat-big-num">1.4</span>
+          <span class="stat-num-label">BAR PRAWIDŁOWEGO CIŚNIENIA</span>
+        </div>
+        <div class="stat-number-box">
+          <span class="stat-big-num">G3</span>
+          <span class="stat-num-label">WYMAGANE UPRAWNIENIE SEP</span>
+        </div>
+        <div class="stat-number-box">
+          <span class="stat-big-num">3s</span>
+          <span class="stat-num-label">SZYBKA DIAGNOZA BLUF</span>
+        </div>
+      </div>
+
+      <!-- METADANE AUTORA I DOKUMENTACJI -->
+      <div class="author-meta-bar">
+        PIOTR OLSZEWSKI / 19 LISTOPADA 2026 / TABLICA ZWERYFIKOWANA Z DTR PRODUCENTA VAILLANT
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 3. PANELE DIAGNOSTYCZNE: POTWIERDZONE Z KONSOLI / ZGŁOSZONE Z CHECKLISTY -->
+  <section class="panels-section">
+    <div class="container">
+      
+      <div class="panels-grid">
+        
+        <!-- LEWA KOLUMNA: DLA DOMOWNIKA (POTWIERDZONE) -->
+        <div class="action-panel-col">
+          <h2 class="col-header-bebas">CZYNNOŚCI DLA DOMOWNIKÓW</h2>
+          <p class="col-desc-sub">
+            Bezpieczne kroki bez użycia narzędzi. Sprawdzenie ciśnienia manometru oraz zaworów gazowych przed wezwaniem serwisu.
+          </p>
+
+          <div class="panel-wait-title">KONTROLA ZASILANIA I RESET KOTŁA</div>
+          <p class="panel-wait-desc">
+            Przed resetem upewnij się, że żółty zawór gazu pod kotłem jest otwarty wzdłuż rury.
+          </p>
+
+          <div class="panel-action-card">
+            <div class="card-box-title">RESET KODU BŁĘDU F.28</div>
+            <p class="card-box-note">
+              Wciśnij i przytrzymaj przycisk z ikoną przekreślonego płomienia przez 3 sekundy. Nie forsuj więcej niż 2-3 prób.
+            </p>
+            
+            <label class="input-label-tiny">Aktualny stan manometru w barach (np. 1.2 lub 0.6)</label>
+            <input type="text" class="panel-input-dark" placeholder="Wpisz odczyt z wyświetlacza kotła...">
+
+            <div class="panel-btn-row">
+              <button class="btn-dark-outline" onclick="alert('Instrukcja: Przytrzymaj przycisk Reset przez 3 sekundy.');">RESETUJ PALNIK</button>
+              <button class="btn-dark-outline" onclick="alert('Sprawdź żółty kurek pod kotłem.');">ZAWÓR GAZU</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- PRAWA KOLUMNA: DLA SERWISANTA Z CHECKLISTY (ZGŁOSZONE) -->
+        <div class="action-panel-col">
+          <h2 class="col-header-bebas">DIAGNOSTYKA SERWISOWA (SEP G3)</h2>
+          <p class="col-desc-sub">
+            Procedura pomiarowa dla autoryzowanego serwisu. Wymaga cyfrowego manometru gazowego i mikroamperomierza.
+          </p>
+
+          <div class="panel-wait-title">PROTOKÓŁ POMIAROWY INSTALATORA</div>
+          <p class="panel-wait-desc">
+            Pomiary ciśnienia dynamicznego gazu ziemnego (min. 17 mbar) i prądu jonizacji elektrody.
+          </p>
+
+          <div class="panel-action-card">
+            <div class="card-box-title">ZGŁOŚ WYNIK POMIARU ELEKTRODY</div>
+            <p class="card-box-note">
+              Wpisz zmierzony prąd jonizacji na elektrodzie dozorującej płomień. <a href="#">Otwórz pełną checklistę DTR</a>.
+            </p>
+
+            <label class="input-label-tiny">Odczyt mikroamperomierza (wymagane min. 4.0 µA)</label>
+            <input type="text" class="panel-input-dark" placeholder="np. 4.8 µA (stan sprawny)">
+
+            <label class="consent-check-row">
+              <input type="checkbox" checked>
+              <span>Potwierdzam wykonanie próby szczelności gazowej oraz posiadanie uprawnień SEP G3 (Dozór/Eksploatacja).</span>
+            </label>
+
+            <!-- ZŁOTY PRZYCISK Z PROMPTOWY.COM -->
+            <button class="btn-gold-action" style="width:100%; height:44px; margin-top:auto;" onclick="alert('Zapisano wpis do protokołu usterki DTR.');">
+              ZAPISZ PROTOKÓŁ NAPRAWY
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- PASEK RODO / OSTRZEŻENIA NA DOLE PANELE -->
+      <div class="rodo-footer-bar">
+        <strong>Bezpieczeństwo i procedury gazowe:</strong> Zgodnie z ustawą Prawo Energetyczne wszelkie ingerencje w zespół palnika i armaturę gazową kotłów Vaillant ecoTEC wymagają świadectwa kwalifikacji Grupy 3. W przypadku wyczucia zapachu gazu natychmiast zamknij zawór główny i zadzwoń pod numer alarmowy <strong>992</strong>. Szczegóły: <a href="#" style="color:#d1d5db;">polityka procedur technicznych DTR</a>.
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 4. SEKCJA ARTYKUŁOWA WARM CREAM Z WIELKIM RÓŻOWYM DROP-CAPEM (1:1 PROMPTOWY) -->
+  <section class="editorial-cream-section">
+    <div class="container">
+      <div class="editorial-content-wrap">
+        
+        <p class="drop-cap-paragraph">
+          <span class="drop-cap-letter">B</span>łąd F.28 jest najczęściej występującą usterką blokującą w nowoczesnych kotłach kondensacyjnych Vaillant z serii ecoTEC plus, pro oraz exclusiv. Z technicznego punktu widzenia oznacza to, że kocioł przeszedł pełną procedurę przedmuchu komory spalania, podał iskrę zapłonową przez elektrody, jednak prąd jonizacji nie osiągnął wymaganego progu w zadanym oknie czasowym.
+        </p>
+
+        <p class="editorial-body-p">
+          W praktyce oznacza to natychmiastową blokadę usterkową zaworu gazowego w celu zabezpieczenia instalacji przed niekontrolowanym ulatnianiem się niespalonej mieszanki. Żeby nie doszło do wychłodzenia domu w okresie zimowym, przygotowaliśmy kompletną procedurę diagnostyczną opartą na fabrycznej dokumentacji DTR. Poniżej znajduje się tabela kluczowych parametrów czujników, które należy zweryfikować przed wymianą płyty głównej (PCB).
+        </p>
+
+        <!-- Tabela parametrów technicznych -->
+        <table class="editorial-spec-table">
+          <thead>
+            <tr>
+              <th>PODZESPÓŁ KOTŁA</th>
+              <th>WARTOŚĆ PRAWIDŁOWA</th>
+              <th>OBJAW USTERKI F.28</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ciśnienie gazu dynamiczne</strong></td>
+              <td>17 – 25 mbar (Gaz E / GZ-50)</td>
+              <td>Spadek poniżej 15 mbar przy starcie palnika</td>
+            </tr>
+            <tr>
+              <td><strong>Prąd jonizacji płomienia</strong></td>
+              <td>Min. 4.0 µA (prąd stały)</td>
+              <td>0.0 µA – elektroda z nagarem lub pęknięta ceramika</td>
+            </tr>
+            <tr>
+              <td><strong>Rezystancja cewek zaworu</strong></td>
+              <td>Ok. 80 Ω (cewka bezpieczeństwa)</td>
+              <td>Przerwa w obwodzie (brak napięcia 24V z PCB)</td>
+            </tr>
+            <tr>
+              <td><strong>Ciśnienie wody w układzie CO</strong></td>
+              <td>1.2 – 1.5 bar (stan zimny)</td>
+              <td>Spadek poniżej 0.8 bar (suchobieg pompy)</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p class="editorial-body-p">
+          Więcej szczegółów dotyczących nastaw palnika znajdziesz w naszej <a href="#">pełnej checkliście DTR dla kotłów kondensacyjnych</a>. Jeżeli wykonany reset nie przyniósł skutku, nie należy wielokrotnie powtarzać procedury, gdyż grozi to uszkodzeniem przekaźnika na płycie elektroniki.
+        </p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SEKCJA FAQ: NAJCZĘSTSZE PYTANIA (1:1 PROMPTOWY ZE ZRZUTU 2) -->
+  <section class="faq-dark-section">
+    <div class="container">
+      
+      <!-- Gradientowa kreska -->
+      <div class="faq-gradient-top-line"></div>
+
+      <div class="faq-header-row">
+        <h2 class="faq-giant-title">NAJCZĘSTSZE PYTANIA</h2>
+        <span class="faq-eyebrow-right">DIAGNOSTYKA W SIEDMIU ODPOWIEDZIACH</span>
+      </div>
+
+      <div class="faq-accordion-list">
+        
+        <div class="faq-accordion-item">
+          <h3 class="faq-question-title">CZY MOGĘ SAMODZIELNIE ZRESETOWAĆ BŁĄD F.28?</h3>
+          <p class="faq-answer-body">
+            Tak, użytkownik może wykonać do 2-3 prób resetu przyciskiem przekreślonego płomienia na panelu kotła. Jeśli po 3 próbach kocioł nadal nie podejmuje pracy, należy wezwać autoryzowany serwis.
+          </p>
+        </div>
+
+        <div class="faq-accordion-item">
+          <h3 class="faq-question-title">DLACZEGO BŁĄD F.28 POJAWIA SIĘ NAJCZĘŚCIEJ W MROZY?</h3>
+          <p class="faq-answer-body">
+            W okresie silnych mrozów najczęstszą przyczyną jest zamarznięcie rury odpływu kondensatu na zewnątrz budynku. Zablokowany syfon uniemożliwia odprowadzenie skroplin i zalewa komorę spalania, gasząc płomień.
+          </p>
+        </div>
+
+        <div class="faq-accordion-item">
+          <h3 class="faq-question-title">CZYM RÓŻNI SIĘ BŁĄD F.28 OD BŁĘDU F.29?</h3>
+          <p class="faq-answer-body">
+            F.28 oznacza, że płomień w ogóle się nie pojawił w trakcie rozruchu (brak zapłonu). Błąd F.29 oznacza, że płomień zapalił się prawidłowo, ale zgasł w trakcie trwania cyklu grzania.
+          </p>
+        </div>
+
+        <div class="faq-accordion-item">
+          <h3 class="faq-question-title">JAK SPRAWDZIĆ, CZY ELEKTRODA JONIZACYJNA JEST SPRAWNA?</h3>
+          <p class="faq-answer-body">
+            Serwisant mierzy prąd mikroamperomierzem wpiętym szeregowo. Wartość sprawna to minimum 4.0 µA. Dodatkowo sprawdza się, czy biały izolator ceramiczny nie ma mikropęknięć powodujących upływ iskry do masy kotła.
+          </p>
+        </div>
+
+        <div class="faq-accordion-item">
+          <h3 class="faq-question-title">ILE KOSZTUJE NAPRAWA BŁĘDU F.28 PRZEZ SERWIS?</h3>
+          <p class="faq-answer-body">
+            Podstawowa diagnoza i czyszczenie elektrod to koszt rzędu 250–350 zł. W przypadku konieczności wymiany bloku gazowego koszt wynosi ok. 600–900 zł, a płyty głównej PCB od 1100 zł wzwyż.
+          </p>
+        </div>
+
+        <div class="faq-accordion-item">
+          <h3 class="faq-question-title">CZY PRZY BŁĘDZIE F.28 MOŻE ULATNIAĆ SIĘ GAZ?</h3>
+          <p class="faq-answer-body">
+            Nowoczesne kotły posiadają podwójny zawór elektromagnetyczny klasy A, który odcina gaz w ułamku sekundy. Mimo to, jeśli w pomieszczeniu wyczuwalny jest nawonnik gazu, bezwzględnie nie wolno resetować kotła.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 6. ŹRÓDŁA I MATRYCA LINKÓW (KREMOWE TŁO - ZE ZRZUTU 2) -->
+  <section class="sources-cream-section">
+    <div class="container">
+      
+      <h2 class="sources-title-bebas">ŹRÓDŁA</h2>
+
+      <ul class="sources-list">
+        <li class="sources-item">
+          Oficjalna Dokumentacja Techniczno-Ruchowa: Instrukcja instalacji i konserwacji Vaillant ecoTEC plus VU/VUW PL
+        </li>
+        <li class="sources-item">
+          <a href="#">kodybledow.pl: checklista diagnostyczna kotłów kondensacyjnych 100%</a>
+        </li>
+        <li class="sources-item dtr-locked">
+          Identyfikator fabryczny DTR: vaillant.pl/dokumentacja-techniczna/ecotec-plus-manual-0020152431.pdf
+        </li>
+      </ul>
+
+      <p class="sources-disclaimer">
+        Serwis niezależny, niepowiązany kapitałowo z Vaillant Group, Viessmann, Bosch ani De Dietrich. Wszystkie nazwy handlowe i oznaczenia kodów są znakami towarowymi ich prawnych właścicieli.
+      </p>
+
+      <!-- 4-kolumnowa matryca linków (ze zrzutu 2) -->
+      <div class="matrix-links-grid">
+        <a href="#" class="matrix-link-box">CHECKLISTA 100%</a>
+        <a href="#" class="matrix-link-box">KODY BŁĘDÓW VAILLANT</a>
+        <a href="#" class="matrix-link-box">ECOTEC PLUS I PRO</a>
+        <a href="#" class="matrix-link-box">UPRAWNIENIA SEP G3</a>
+        <a href="#" class="matrix-link-box">MAPA USTEREK CO</a>
+        <a href="#" class="matrix-link-box">ZAWORY I ELEKTRODY</a>
+        <a href="#" class="matrix-link-box">PORADNIK - SPIS TREŚCI</a>
+        <a href="#" class="matrix-link-box">WSZYSTKO O F.28</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 7. NEWSLETTER / SCHEMAT DTR DO POBRANIA (ZE ZRZUTU 3) -->
+  <section class="download-newsletter-section" id="newsletter">
+    <div class="container">
+      
+      <div class="download-grid">
+        
+        <!-- Lewa strona: Nagłówek, lista 01, 02, 03 i formularz -->
+        <div>
+          <div class="dl-eyebrow">— BIULETYN SERWISOWY CO CZWARTEK</div>
+          <h2 class="dl-main-title">SCHEMAT DTR VAILLANT DO DRUKU I CHECKLISTA 100%</h2>
+          <p class="dl-desc">
+            Raz w tygodniu, w czwartek, wysyłamy nowe solucje, procedury serwisowe i aktualizacje bazy kodów. Na start dostajesz dwa pliki PDF.
+          </p>
+
+          <div class="features-0123-list">
+            <div class="feature-0-row">
+              <span class="feat-num">01</span>
+              <div>
+                <div class="feat-heading">Schemat blokowy kotła do druku</div>
+                <div class="feat-sub">PDF w formatach A3 i A4: 18 punktów pomiarowych z kodami części</div>
+              </div>
+            </div>
+            <div class="feature-0-row">
+              <span class="feat-num">02</span>
+              <div>
+                <div class="feat-heading">Checklista serwisowa 100%</div>
+                <div class="feat-sub">PDF do odznaczania długopisem: 32 procedury sprawdzające w 5 układach</div>
+              </div>
+            </div>
+            <div class="feature-0-row">
+              <span class="feat-num">03</span>
+              <div>
+                <div class="feat-heading">List techniczny co czwartek</div>
+                <div class="feat-sub">Nowe porady, parametry rezystancji NTC i biuletyny producentów. Wypisujesz się 1 kliknięciem.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Formularz z jaskrawym żółtym przyciskiem z Promptowy.com -->
+          <form class="email-submit-wrap" onsubmit="event.preventDefault(); alert('Dziękujemy! Link do pobrania schematu wysłano.');">
+            <input type="email" class="email-dark-input" placeholder="twoj@email.pl" required>
+            <button type="submit" class="btn-gold-download">ZAPISZ SIĘ I POBIERZ PDF</button>
+          </form>
+
+          <label class="consent-check-row">
+            <input type="checkbox" required checked>
+            <span>Chcę dostawać biuletyn techniczny od kodybledow.pl. Zgodę mogę wycofać w każdej chwili.</span>
+          </label>
+        </div>
+
+        <!-- Prawa strona: Podgląd schematu DTR z poświatą neonową -->
+        <div>
+          <div class="schematic-preview-card">
+            <svg class="schematic-svg-art" viewBox="0 0 320 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="320" height="280" fill="#070210"/>
+              <!-- Obrys kotła ze schematem hydraulicznym -->
+              <rect x="40" y="25" width="240" height="230" rx="8" stroke="#3B2D54" stroke-width="1.5"/>
+              <text x="160" y="50" fill="#D946EF" font-family="'Bebas Neue', sans-serif" font-size="16" letter-spacing="1" text-anchor="middle">SCHEMAT HYDRAULICZNO-GAZOWY VAILLANT</text>
+              
+              <!-- Palnik z płomieniem -->
+              <rect x="90" y="70" width="140" height="50" rx="4" fill="#150F28" stroke="#D946EF" stroke-width="1.5"/>
+              <circle cx="160" cy="95" r="16" fill="rgba(217, 70, 239, 0.15)"/>
+              <path d="M160 85C160 85 152 92 152 97C152 101.4 155.6 105 160 105C164.4 105 168 101.4 168 97C168 92 160 85 160 85Z" fill="#F5C05C"/>
+              
+              <!-- Blok zaworu gazowego -->
+              <rect x="70" y="150" width="70" height="40" rx="4" fill="#1A1232" stroke="#38BDF8" stroke-width="1.5"/>
+              <text x="105" y="174" fill="#38BDF8" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">ZAWÓR GAZ</text>
+              
+              <!-- Pompa obiegowa -->
+              <circle cx="210" cy="170" r="22" fill="#1A1232" stroke="#10B981" stroke-width="1.5"/>
+              <text x="210" y="174" fill="#10B981" font-family="'JetBrains Mono', monospace" font-size="9" text-anchor="middle">POMPA</text>
+
+              <!-- Linie połączeń -->
+              <path d="M105 150V120H130" stroke="#38BDF8" stroke-width="2" stroke-dasharray="3 3"/>
+              <path d="M210 148V120H190" stroke="#10B981" stroke-width="2"/>
+              <line x1="160" y1="120" x2="160" y2="140" stroke="#EF4444" stroke-width="2"/>
+            </svg>
+            <div class="schematic-caption-row">
+              <span>SCHEMAT BLOKOWY DTR ECOTEC</span>
+              <span>PDF • A3 • A4</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- 8. BANER AUTORA & STOPKA 6-KOLUMNOWA (ZE ZRZUTU 3) -->
+  <section class="author-banner-section">
+    <div class="container">
+      <div class="author-banner-inner">
+        <div class="author-avatar-img">PO</div>
+        <div class="author-text-info">
+          <strong>Cześć, jestem Piotr.</strong> Tłumaczę błędy kotłów i pomp ciepła na polski - po ludzku i bez paniki. Procedury DTR, gotowe rozwiązania, baza kodów i cotygodniowy biuletyn. <a href="#">O mnie →</a> <a href="#newsletter">Biuletyn techniczny →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STOPKA 6-KOLUMNOWA Z PROMPTOWY.COM -->
+  <footer class="six-col-footer">
+    <div class="container">
+      
+      <div class="six-col-grid">
+        
+        <div>
+          <div class="footer-col-title">CZYTAJ</div>
+          <ul class="footer-links-col">
+            <li><a href="#">Najnowsze kody</a></li>
+            <li><a href="#">Zmiany w DTR</a></li>
+            <li><a href="#">Testy pomp ciepła</a></li>
+            <li><a href="#">Recenzje kotłów</a></li>
+            <li><a href="#">Poradniki domowe</a></li>
+            <li><a href="#">Biuletyn techniczny</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">KOTŁY CO</div>
+          <ul class="footer-links-col">
+            <li><a href="#">Vaillant ecoTEC</a></li>
+            <li><a href="#">Viessmann Vitodens</a></li>
+            <li><a href="#">Junkers Cerapur</a></li>
+            <li><a href="#">Bosch Condens</a></li>
+            <li><a href="#">Beretta Mynute</a></li>
+            <li><a href="#">De Dietrich Innovens</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">POPULARNE BŁĘDY</div>
+          <ul class="footer-links-col">
+            <li><a href="#">Vaillant F.28 / F.29</a></li>
+            <li><a href="#">Viessmann F4 / EE</a></li>
+            <li><a href="#">Junkers EA / C6</a></li>
+            <li><a href="#">Bosch 227 / EA</a></li>
+            <li><a href="#">Buderus 3C / 6A</a></li>
+            <li><a href="#">Baxi E01 / E03</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">NARZĘDZIA</div>
+          <ul class="footer-links-col">
+            <li><a href="#">Kalkulator NTC</a></li>
+            <li><a href="#">Przelicznik bar / psi</a></li>
+            <li><a href="#">Dobór naczynia CO</a></li>
+            <li><a href="#">Test prądu elektrody</a></li>
+            <li><a href="#">Kalkulator mocy kotła</a></li>
+            <li><a href="#">Katalog dysz gazowych</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">UPRAWNIENIA</div>
+          <ul class="footer-links-col">
+            <li><a href="#">Eksploatacja SEP G3</a></li>
+            <li><a href="#">Dozór SEP G3</a></li>
+            <li><a href="#">Certyfikat F-gazy</a></li>
+            <li><a href="#">Próby szczelności</a></li>
+            <li><a href="#">Audyt kominiarski</a></li>
+            <li><a href="#">Prawo energetyczne</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="footer-col-title">PROJEKTY</div>
+          <ul class="footer-links-col">
+            <li><a href="#">Baza DTR Online</a></li>
+            <li><a href="#">Kody AGD</a></li>
+            <li><a href="#">Klimatyzatory Split</a></li>
+            <li><a href="#">Klub Instalatora</a></li>
+            <li><a href="#">Mapa Serwisantów</a></li>
+            <li><a href="#" style="color:var(--accent-pink);">WSZYSTKIE (48) →</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Dolny pasek tematów -->
+      <div class="all-topics-bar">
+        <span>Wszystkie kody błędów i solucje (128 marek)</span>
+        <a href="#">Wszystkie tematy 38 +</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- Szybki skrót klawiszowy Ctrl+K -->
+  <script>
+    document.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) searchInput.focus();
+      }
+    });
+  </script>
+</body>
+</html>
